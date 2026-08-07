@@ -1,0 +1,211 @@
+@charset "UTF-8";
+
+/* src/app/curriculum/page.module.scss */
+
+.container, .curriculumContainer {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 40px 24px 80px;
+  overflow: hidden;
+}
+
+.curriculumContainer.isLeaving .content{
+  animation: slideOutLeft 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+// 背景
+.bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 45% at 50% 20%, rgba(22, 39, 77, 0.05), transparent 70%),
+    linear-gradient(var(--color-hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-hairline) 1px, transparent 1px);
+  background-size: auto, 64px 64px, 64px 64px;
+  background-position: center;
+  mask-image: radial-gradient(75% 65% at 50% 30%, #000 40%, transparent 90%);
+  opacity: 0.7;
+  z-index: 0;
+}
+
+// 表示内容Wrapper
+.content{
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  z-index: 1;
+
+  // 画面読み込み時のアニメーション
+  animation: assembleUp 0.6s var(--ease-out-soft) both;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 48px;
+  text-align: center;
+
+  .logoLink {
+    display: inline-block;
+    margin-bottom: 12px;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.08);
+    }
+  }
+
+  .title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 1.2rem + 1.8vw, 2.5rem);
+    color: var(--color-navy);
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    color: var(--color-ink-soft);
+    max-width: 580px;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+}
+
+/*
+.title {
+  font-size: 2rem;
+  color: var(--color-navy);
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--color-ink-soft);
+}
+*/
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.cardLink{
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  // 画面読み込み時アニメーション 各カードを時間差で組み上げ
+  opacity: 0;
+  animation: assembleUp 0.6s var(--ease-out-soft) both;
+
+  @for $i from 1 through 10 {
+    &:nth-child( #{$i} ) {
+      animation-delay: #{ 0.1 + $i * 0.08}s;
+    }
+  }
+
+}
+
+.card {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-hairline);
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 2px 8px rgba(22, 39, 77, 0.04);
+  //transition: all 0.2s ease;
+  transition: all 0.25s var(--ease-out-soft);
+
+  &:hover {
+    border-color: var(--color-orange-base);
+    box-shadow: 0 8px 20px rgba(22, 39, 77, 0.08);
+    transform: translateY(-4px);
+  }
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  //font-weight: bold;
+  color: var(--color-orange-base);
+  background-color: rgba(232, 93, 42, 0.08);
+  padding: 4px 2rem;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.card h2 {
+  font-size: 1.25rem;
+  color: var(--color-navy);
+  margin: 0 0 10px;
+  //margin-bottom: 12px;
+}
+
+.description {
+  font-size: 0.88rem;
+  color: var(--color-ink-soft);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.topicList {
+  list-style: none;
+  padding: 0 0 0 18px;
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--color-ink);
+  color: var(--color-navy-soft);
+
+  li {
+    margin-bottom: 6px;
+  }
+}
+
+.backWrapper {
+  margin-top: 48px;
+  text-align: center;
+}
+
+.backButton {
+  color: var(--color-navy);
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+
+//--------------  Animation  ---------------
+// 画面読み込み時
+@keyframes assembleUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// カード選択時
+@keyframes slideOutLeft {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100vw);
+    opacity: 0;
+  }
+}
+

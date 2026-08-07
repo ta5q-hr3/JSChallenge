@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+.bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 45% at 50% 38%, rgba(22, 39, 77, 0.05), transparent 70%),
+    linear-gradient(var(--color-hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-hairline) 1px, transparent 1px);
+  background-size: auto, 64px 64px, 64px 64px;
+  background-position: center;
+  mask-image: radial-gradient(65% 55% at 50% 42%, #000 40%, transparent 85%);
+  z-index: 0;
+}

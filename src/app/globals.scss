@@ -1,0 +1,60 @@
+/* 
+ * app/globals.scss
+ * アプリ全体のベーススタイル
+ */
+
+:root {
+  /*
+  --bg-primary: #050811;          // 漆黒に寄せたメイン背景色 
+  --bg-surface: #1e293b;          // カード・パネル背景色 
+  --border-color: #334155;        // 境界線 
+  --accent-primary: #f97316;      // 情熱のオレンジ 
+  --accent-primary-hover: #ea580c;// ホバー時のオレンジ 
+  --accent-success: #10b981;      // エメラルドグリーン 
+  --text-primary: #f8fafc;        // メインテキスト 
+  --text-muted: #94a3b8;          // サブテキスト 
+  */
+
+  --color-bg: #ffffff;
+  --color-navy: #16274d;
+  --color-navy-soft: #263a63;
+  --color-ink: #14161c;
+  --color-ink-soft: #5b616f;
+  --color-orange-base: #e85d2a;
+  --color-orange-light: #ffa463;
+  --color-hairline: #e7eaf2;
+
+  --font-display: "Space Grotesk", "Hiragino Sans", sans-serif;
+  --font-body: "Inter", "Hiragino Sans", sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  min-height: 100vh;
+  //background-color: var(--bg-primary);
+  background: var(--color-bg);
+  //color: var(--text-primary);
+  color: var(--color-ink);
+  //font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-body);
+  line-height: 1.6;
+  margin: 0;
+  //-webkit-font-smoothing: antialiased;
+
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  //padding: 40px 20px;
+}

@@ -1,0 +1,302 @@
+@charset "UTF-8";
+
+:root {
+  --plate-size: 132px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --plate-size: 104px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --plate-size: 148px;
+  }
+}
+
+.fv {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 6vh 6vw;
+}
+
+// 遷移アニメーション
+.fv.isLeaving .fvContent {
+  animation: slideUp 0.5s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  // 沈み込みアクション
+  25% {
+    transform: translateY(12px) scale(0.98);
+    opacity: 1;
+  }
+  // スライドしてフレームアウト
+  100% {
+    transform: translateY(-120vh) scale(0.8);
+    opacity: 0;
+  }
+}
+
+
+.fvBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 45% at 50% 38%, rgba(22, 39, 77, 0.05), transparent 70%),
+    linear-gradient(var(--color-hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-hairline) 1px, transparent 1px);
+  background-size: auto, 64px 64px, 64px 64px;
+  background-position: center;
+  mask-image: radial-gradient(65% 55% at 50% 42%, #000 40%, transparent 85%);
+  opacity: 0.7;
+}
+
+.fvContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 28px;
+  max-width: 720px;
+}
+
+
+/* -------------------- Logo -------------------- */
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoStage {
+  position: relative;
+  width: var(--plate-size);
+  height: calc(var(--plate-size) * 1.141);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoBox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 16px 26px rgba(22, 39, 77, 0.3));
+}
+
+.boxFace {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: faceAppear 0.45s var(--ease-out-soft) both;
+}
+
+.boxFaceLeft {
+  fill: var(--color-navy);
+  animation-delay: 0.2s;
+}
+
+.boxFaceRight {
+  fill: #0f1b38;
+  animation-delay: 0.5s;
+}
+
+.boxFaceTop {
+  fill: var(--color-orange-base);
+  animation-delay: 0.8s;
+}
+
+@keyframes faceAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.boxLetter {
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  fill: #ffffff;
+  opacity: 0;
+  animation: letterAppear 0.4s var(--ease-out-soft) both;
+}
+
+.boxLetterS {
+  font-size: 46px;
+  animation-delay: 1.25s;
+}
+
+.boxLetterL {
+  font-size: 42px;
+  animation-delay: 1.33s;
+}
+
+.boxLetterW {
+  font-size: 46px;
+  animation-delay: 1.41s;
+}
+
+@keyframes letterAppear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+/* -------------------- Text -------------------- */
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.5rem, 1.15rem + 1.4vw, 2.25rem);
+  letter-spacing: -0.01em;
+  color: var(--color-navy);
+  margin: 0;
+  opacity: 0;
+  animation: textRise 0.6s 1s var(--ease-out-soft) both;
+}
+
+.tagline {
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 0.83rem + 0.3vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--color-ink-soft);
+  margin: -12px 0 0;
+  max-width: 640px;
+  opacity: 0;
+  animation: textRise 0.6s 1.15s var(--ease-out-soft) both;
+}
+
+@keyframes textRise {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* -------------------- Button -------------------- */
+
+.cta {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 12px;
+  padding: 14px 40px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  background: var(--color-orange-base);
+  box-shadow: none;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: background-color 0.15s var(--ease-out-soft);
+
+  &.isVisible {
+    animation: ctaAppear 0.55s var(--ease-out-soft) both;
+    pointer-events: auto;
+  }
+
+  &:hover {
+    background: #cf4f1f;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-navy);
+    outline-offset: 3px;
+  }
+
+  &:active {
+    background: #b8451a;
+  }
+}
+
+@keyframes ctaAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* -------------------- Responsive -------------------- */
+
+@media (max-width: 640px) {
+  .fv {
+    padding: 8vh 8vw;
+  }
+
+  .fvContent {
+    gap: 22px;
+  }
+
+  .tagline {
+    margin-top: -6px;
+  }
+
+  .cta {
+    width: 100%;
+    max-width: 280px;
+    padding: 15px 32px;
+  }
+}
+
+
+/* -------------------- Reduced Motion -------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .boxFace,
+  .boxLetter,
+  .brand,
+  .tagline,
+  .cta,
+  .cta.isVisible {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .boxFace,
+  .boxLetter,
+  .brand,
+  .tagline,
+  .cta.isVisible {
+    opacity: 1;
+    transform: none;
+  }
+}
+

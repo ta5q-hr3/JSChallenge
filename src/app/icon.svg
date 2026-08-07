@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="84.1 22 171.8 196" width="100%" height="100%">
+  <!-- 上面 (オレンジ) -->
+  <polygon points="170,30 247.9,75 170,120 92.1,75" fill="#e85d2a" />
+  <!-- 左面 (ネイビー) -->
+  <polygon points="92.1,75 170,120 170,210 92.1,165" fill="#16274d" />
+  <!-- 右面 (ダークネイビー) -->
+  <polygon points="247.9,75 170,120 170,210 247.9,165" fill="#0f1b38" />
+
+  <!-- L / S / W テキスト -->
+  <text transform="matrix(0.779,0.45,-0.779,0.45,170,30)" x="50" y="50" fill="#ffffff" font-family="Georgia, serif" font-weight="700" font-size="42" text-anchor="middle" dominant-baseline="central">L</text>
+  <text transform="matrix(0.779,0.45,0,0.9,92.1,75)" x="50" y="50" fill="#ffffff" font-family="Georgia, serif" font-weight="700" font-size="46" text-anchor="middle" dominant-baseline="central">S</text>
+  <text transform="matrix(0.779,-0.45,0,0.9,170,120)" x="50" y="50" fill="#ffffff" font-family="Georgia, serif" font-weight="700" font-size="46" text-anchor="middle" dominant-baseline="central">W</text>
+</svg>
