@@ -210,6 +210,10 @@
 
 // 画面左右中央に固定配置するナビゲーションボタン
 .fixedNavButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
@@ -221,24 +225,27 @@
   border: 1px solid var(--color-hairline);
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(22, 39, 77, 0.12);
   color: var(--color-navy);
+  cursor: pointer;
   font-size: 2.2rem;
   font-weight: 300;
   line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(22, 39, 77, 0.12);
   transition: all 0.2s var(--ease-out-soft);
   text-align: center;
+  vertical-align: middle;
+
+  // テキスト要素を 親要素の中央に寄せる
+  span {
+    display: inline-block;
+    transform: translateY(-3px);
+  }
 
   /* 左固定ボタン */
   &.prev {
     left: 16px;
     line-height: 100%;
     text-indent: -0.2rem;
-    vertical-align: middle;
 
     @media (min-width: 1200px) {
       left: 32px; /* 大画面では少し内側に配置して押しやすく */
@@ -252,7 +259,6 @@
     color: #ffffff;
     border-color: var(--color-navy);
     text-indent: 0.2rem;
-    vertical-align: middle;
 
     @media (min-width: 1200px) {
       right: 32px;

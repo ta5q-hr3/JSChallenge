@@ -186,7 +186,7 @@ return (
   onClick={scrollPrev}
   disabled={selectedIndex === 0}
   aria-label="前のステップへ"
-> ‹ </button>
+><span>‹</span></button>
 
 <button 
   type="button"
@@ -194,7 +194,7 @@ return (
   onClick={scrollNext}
   disabled={!emblaApi?.canScrollNext()}
   aria-label="次のステップへ"
-> › </button>
+><span>›</span></button>
 
 
 {/** 下段のコントロールボタン */}
