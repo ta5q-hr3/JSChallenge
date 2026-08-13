@@ -39,15 +39,34 @@ export const CHAPTERS_DATA: Chapter[] = [
   },
   {
     id: 5,
-    title: "第5章: Next.jsの実践開発",
+    title: "第5章: Prismaとデータベース（PostgreSQL/SQLite）連携",
+    description: "TypeScriptの型安全性を崩さずにDBへアクセスする技術について",
+    topics: ["ORM（Prisma）の概要と DB（SQLite/PostgreSQL）選定", "Prisma Schema", "Prisma Client", "型安全な CRUD 操作とトランザクション", "App Router(Server Actions)との結合"],
+  },
+  {
+    id: 6,
+    title: "第6章: Next.jsの実践開発",
     description: "Server ComponentsとServer Actionsを活用した実践的開発",
     topics: ["RSC vs Client Components", "Data Fetching", "Dynamic Routing & 画像最適化"],
   },
   {
-    id: 6,
-    title: "第6章: アプリケーション開発実践",
+    id: 7,
+    title: "第7章: 認証・セキュリティと本番デプロイ",
+    description: "Auth.js（NextAuth.v5）を用いた最新の型安全認証から、Web securityの防壁、環境変数の管理、そしてオンプレミスやクラウド（Vercel/Docker）への本番デプロイ手順を学習",
+    topics: ["Auth.js（NextAuth.v5）による方安全認証"],
+  },
+/*  {
+    id: 7,
+    title: "第7章: アプリケーション開発実践",
+    description: "本学習アプリを自力で構築し、Vercel/Dockerへデプロイする",
+    topics: ["コンポーネント分割", "ウィザードState実装", "ビルド & デプロイ"],
+  },*/
+  {
+    id: 8,
+    title: "第8章: アプリケーション開発実践",
     description: "本学習アプリを自力で構築し、Vercel/Dockerへデプロイする",
     topics: ["コンポーネント分割", "ウィザードState実装", "ビルド & デプロイ"],
   },
+
 ];
 

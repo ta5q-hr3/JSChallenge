@@ -11,7 +11,8 @@ import { Prism as SynyaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 // 学習内容
 //import { StepContent } from "@/types/wizard";
-import { CHAPTER_STEPS } from "@/data/steps";
+//import { CHAPTER_STEPS } from "@/data/steps";
+import { CHAPTER_STEPS } from "@/data/steps/index";
 import { CHAPTERS_DATA } from "@/data/curriculum";
 
 import MiniLogo from "@/app/components/MiniLogo";
@@ -180,15 +181,14 @@ return (
 </div>{/** .embla */}
 
 {/** 前・後 コントロールボタン */}
-<button 
+<button
   type="button"
   className={`${styles.fixedNavButton} ${styles.prev}`}
   onClick={scrollPrev}
   disabled={selectedIndex === 0}
   aria-label="前のステップへ"
 ><span>‹</span></button>
-
-<button 
+<button
   type="button"
   className={`${styles.fixedNavButton} ${styles.next}`}
   onClick={scrollNext}
