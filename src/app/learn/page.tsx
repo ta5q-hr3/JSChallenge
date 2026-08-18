@@ -102,6 +102,25 @@ return (
   </div>
 </header>
 
+{/** 前・後 コントロールボタン */}
+<div className={styles.buttonBox}>
+  <button
+    type="button"
+    className={`${styles.fixedNavButton} ${styles.prev}`}
+    onClick={scrollPrev}
+    disabled={selectedIndex === 0}
+    aria-label="前のステップへ"
+  ><span>‹</span></button>
+  <button
+    type="button"
+    className={`${styles.fixedNavButton} ${styles.next}`}
+    onClick={scrollNext}
+    disabled={!emblaApi?.canScrollNext()}
+    aria-label="次のステップへ"
+  ><span>›</span></button>
+</div>
+
+
 {/** カルーセルエリア */}
 <div className={styles.embla} ref={emblaRef}>
   <div className={styles.emblaContainer}>
@@ -180,21 +199,7 @@ return (
   </div>{/** .emblaContainer */}
 </div>{/** .embla */}
 
-{/** 前・後 コントロールボタン */}
-<button
-  type="button"
-  className={`${styles.fixedNavButton} ${styles.prev}`}
-  onClick={scrollPrev}
-  disabled={selectedIndex === 0}
-  aria-label="前のステップへ"
-><span>‹</span></button>
-<button
-  type="button"
-  className={`${styles.fixedNavButton} ${styles.next}`}
-  onClick={scrollNext}
-  disabled={!emblaApi?.canScrollNext()}
-  aria-label="次のステップへ"
-><span>›</span></button>
+
 
 
 {/** 下段のコントロールボタン */}

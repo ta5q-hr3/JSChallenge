@@ -1,4 +1,4 @@
-// CAHPTER 3
+// CHAPTER 3
 import { StepContent } from "@/types/wizard";
 
 export const CHAPTER_3_STEPS: StepContent[] = [
@@ -16,18 +16,32 @@ interface GreetingProps {
   isTrainer?: boolean;
 }
 
+// 書き方①: React.FC<Props> を使う（従来よく使われてきた書き方）
 export const Greeting: React.FC<GreetingProps> = ({ name, isTrainer = false }) => {
   return (
     <div className="card">
       <h3>オッス、{name}！</h3>
-      {isTrainer && <p>🏋️‍♂️ 本日も限界まで追い込みましょう！</p>}
+      {isTrainer && <p>本日も限界まで追い込みましょう!</p>}
     </div>
   );
-};`,
+};
+
+// 書き方②: 関数の引数に直接Props型を注釈する（近年推奨されることが多い書き方）
+// React.FC は「暗黙的に children を受け取れてしまう」「Genericsなコンポーネントと相性が悪い」
+// といった理由から、最近はこちらのシンプルな書き方が広く使われる傾向にある
+export function GreetingAlt({ name, isTrainer = false }: GreetingProps) {
+  return (
+    <div className="card">
+      <h3>オッス、{name}！</h3>
+      {isTrainer && <p>本日も限界まで追い込みましょう!</p>}
+    </div>
+  );
+}`,
 keyPoints: [
   "TSX ファイルでは HTML 風の記法と TypeScript の型演算をスムーズに融合できる",
   "仮想DOMの差分検出により、DOM操作のオーバーヘッドを劇的に削減",
   "条件付きレンダリング（&& や三項演算子）でも型チェックが厳格に機能する",
+  "React.FC<Props> と「関数の引数に直接Props型を注釈する」書き方の2通りがある。どちらも間違いではないが、近年は後者（React.FCを使わない書き方）が推奨されることが多い",
 ],
 },
 
@@ -47,23 +61,41 @@ interface CounterProps {
 // 2. 複雑な State の型定義（Union 型の活用）
 type UserStatus = "active" | "resting" | "exhausted";
 
+// 3. 非同期取得前は値が存在しない、といったケースの型定義
+interface UserProfile {
+  id: string;
+  name: string;
+}
+
 export function MuscleCounter({ initialCount = 0, label }: CounterProps) {
   const [count, setCount] = useState<number>(initialCount);
-  // 初期値が null の可能性がある場合は Generics で明示！
   const [status, setStatus] = useState<UserStatus>("active");
+
+  // 初期値が null の可能性がある場合は Generics で明示！
+  // 「UserProfile型 または null」という Union 型を useState に渡す
+  const [user, setUser] = useState<UserProfile | null>(null);
+
+  // 疑似的な非同期取得 (非同期処理したように見えるだけ。実際は useEffect + fetch などを利用する)
+  const handleLoadUser = () => {
+    setUser({ id: "usr_001", name: "Taro" });
+  };
 
   return (
     <div>
       <h4>{label}: {count} レップ</h4>
       <p>現在の状態: {status}</p>
+      {/* user が null の可能性があるため、参照前に必ずチェックが必要になる */}
+      <p>ユーザー: {user ? user.name : "未取得"}</p>
       <button onClick={() => setCount((prev) => prev + 1)}>＋1 レップ</button>
       <button onClick={() => setStatus("exhausted")}>限界突破（All Out）</button>
+      <button onClick={handleLoadUser}>ユーザー情報を取得</button>
     </div>
   );
 }`,
 keyPoints: [
   "Props は読み取り専用（Immutable）。受け取る側で Interface を定義して契約を結ぶ",
   "useState<T> で初期値から型が推論されるが、null を許容する場合などは明示的に Generics を渡す",
+  "useState<UserProfile | null>(null) のように「型 | null」を渡すと、『まだ値が無いかもしれない状態』を型で安全に表現できる。この場合、TypeScriptは使用前にnullチェックを行うことを促してくれる",
 ],
 },
 
@@ -109,7 +141,7 @@ keyPoints: [
 {
 stepNumber: 4,
 title: "【実践】イベントハンドラーと Form の型注釈",
-explanation: "ユーザーの入力（input）やフォーム送信（submit）イベントの型を正確につけることで、イベントオブジェクト（e）の補完機能がフルに働き、安全なイベントハンドリングが可能になります。",
+explanation: "ユーザーの入力 (input) やフォーム送信 (submit) イベントの型を正確につけることで、イベントオブジェクト（e）の補完機能がフルに働き、安全なイベントハンドリングが可能になります。",
 codeExample: `import React, { useState } from "react";
 
 export function MuscleForm() {
@@ -152,8 +184,8 @@ export function useToggle(initialValue: boolean = false) {
 
   const toggle = () => setValue((prev) => !prev);
 
-  // as const をつからないと (boolean | (() => void))[] の配列型と推論されてしまう！
-  // as const をつけることで [boolean, () => void] のタプル型に固定！
+  // as const を使わないと (boolean | (() => void))[] の配列型と推論されてしまう！
+  // as const を使うことで [boolean, () => void] のタプル型に固定！
   return [value, toggle] as const;
 }
 

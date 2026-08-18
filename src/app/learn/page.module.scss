@@ -3,9 +3,16 @@
 /* src/app/learn/page.module.scss */
 
 .learnContainer {
-  max-width: 1000px;
+  @media ( width <= 720px) {
+    width: 99vw;    
+  }
+  @media ( width <= 720px) {
+    width: 95%;    
+  }
+
+  //max-width: 1000px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 24px 1px;
 
   // 画面表示時に右からスライドイン
   animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -214,15 +221,24 @@
 
 
 // 画面左右中央に固定配置するナビゲーションボタン
-.fixedNavButton {
+.buttonBox{
   display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
+    align-items: center;
+    justify-content: center;
+  position:sticky;
+  top: 10%;
+  height: auto;
+  width: 99vw;
   z-index: 100; /* カードや背景より前面に配置 */
+}
+.fixedNavButton {
+  //display: flex;
+  //position: fixed;
+  position: absolute;
+  //top: 50%;
+  //top: -100%;
+  //transform: translateY(-50%);
+  //z-index: 100; /* カードや背景より前面に配置 */
   
   width: 48px;
   height: 48px;
@@ -248,7 +264,8 @@
 
   /* 左固定ボタン */
   &.prev {
-    left: 16px;
+    //left: 16px;
+    left: 10%;
     line-height: 100%;
     text-indent: -0.2rem;
 
@@ -259,7 +276,8 @@
 
   /* 右固定ボタン */
   &.next {
-    right: 16px;
+    //right: 16px;
+    right: 10%;
     background: var(--color-navy);
     color: #ffffff;
     border-color: var(--color-navy);
@@ -272,7 +290,8 @@
 
   /* ホバー時のパンプアップ演出！ */
   &:hover:not(:disabled) {
-    transform: translateY(-50%) scale(1.1);
+    //transform: translateY(-50%) scale(1.1);
+    transform: translateY(-5%) scale(1.1);
     box-shadow: 0 6px 20px rgba(232, 93, 42, 0.25);
   }
 
@@ -302,3 +321,5 @@
     opacity: 1;
   }
 }
+
+
