@@ -7,15 +7,22 @@ export const CHAPTER_5_STEPS: StepContent[] = [
 {
 stepNumber: 1,
 title: "ORM（Prisma）の概要と DB（SQLite/PostgreSQL）選定",
-explanation: "ORM（Object-Relational Mapping）は、SQLを手書きせずにTypeScriptのオブジェクトとしてDB操作を行う仕組みです。PrismaはSchemaファイルから自動的に完全なTypeScript型を生成するため、コンパイル時点でタイポや型エラーを完璧にガードします。",
-codeExample: `// prisma/schema.prisma (SQLiteの例：ローカル開発向け)
+explanation: "ORM（Object-Relational Mapping）は、SQLを手書きせずにTypeScriptのオブジェクトとしてDB操作を行う仕組みです。Prismaは、Node.js・TypeScript向けのオープンソースORMです。PrismaはSchemaファイルから自動的に完全なTypeScript型を生成するため、コンパイル時点でタイポや型エラーを完璧にガードします。",
+codeExample: `// まずはPrisma CLI とクライアントの両方をインストール
+// npm install prisma @prisma/client
+// prismaを初期化します
+// npx prisma init
+// .env ファイルでDB接続設定を行います
+// 例 : DATABASE_URL="postgresql://username:password@localhost:3600/mydb"
+
+// prisma/schema.prisma (SQLiteの例：ローカル開発向け)
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = "file:./dev.db" // もしくは env("DATABASE_URL");
 }
 
 generator client {
-  provider = "provider-js" // TypeScript型クライアントの生成
+  provider = "prisma-client-js" // TypeScript型クライアントの生成
 }
 
 // 本番環境（PostgreSQL）に切り替える場合は datasource の provider を "postgresql" に変更し、
@@ -75,11 +82,12 @@ npx prisma migrate dev --name init
 # 2. Prisma Client の手動再生成（スキーマ変更時）
 npx prisma generate
 
-# 3. GUIでDBデータを直接閲覧・編集できる最高ツール「Prisma Studio」の起動
-npx prisma studio`,
+# 3. GUIでDBデータを直接閲覧・編集できるツール「Prisma Studio」の起動
+npx prisma studio
+(ブラウザが起動しますが、デフォではhttp://localhost:5555でアクセスできます)`,
 keyPoints: [
   "prisma migrate dev: マイグレーションSQLファイルを自動作成し、DBに適用",
-  "node_modules/.prisma/client 内に最新の型定義が自動生成されるため、補完が爆速で働く",
+  "node_modules/.prisma/client 内に最新の型定義が自動生成されるため、補完が瞬時に働く",
 ],
 },
 
@@ -101,7 +109,7 @@ async function main() {
   const newUser = await prisma.user.create({
     data: {
       email: "macho@example.com",
-      name: "アノニ摩寿男",
+      name: "筋肉スグル",
       posts: {
         create: { title: "胸トレの真髄", content: "大胸筋を追い込め！" },
       },
@@ -118,6 +126,7 @@ async function main() {
 keyPoints: [
   "include や select を使うと、取得結果の型も動的に推論されてネスト構造まで安全になる",
   "PrismaClient インスタンスは開発環境でのホットリロード対策としてグローバル保持する",
+  "開発サーバーのHMR（Hot Module Replacement）はファイル変更のたびにモジュールを再評価するため、Singletonパターンを使わないとリクエストのたびにPrismaClientが新規生成され、DB接続数の上限オーバーフローを引き起こしてしまう",
   "$transaction を使用してデータの整合性を鉄壁にする",
 ],
 },
@@ -158,4 +167,3 @@ keyPoints: [
 ],
 },
 ];
-
