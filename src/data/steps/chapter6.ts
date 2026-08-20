@@ -1,4 +1,4 @@
-// CHAPTER6
+// CHAPTER 6
 import { StepContent } from "@/types/wizard";
 
 export const CHAPTER_6_STEPS: StepContent[] = [
@@ -7,7 +7,7 @@ export const CHAPTER_6_STEPS: StepContent[] = [
 {
 stepNumber: 1,
 title: "RSC vs Client Components の設計戦略と境界線",
-explanation: "React Server Components (RSC) はサーバー上で実行され、HTML/JSONとしてレンダリングされます。JSバンドルサイズに含まれないため爆速です。一方、Client Components ('use client') はブラウザ側でインタラクティブな操作や状態（useState/useEffect）を扱うためのものです。適切な分離（Composition）がアプリのパフォーマンスを左右します。",
+explanation: "Chapter4では、Server Components (RSC) がサーバー上で実行されバンドルサイズに含まれないこと、'use client' によってインタラクティブな処理をクライアント側に切り出せることの基本を学びました。ここでは一歩進んで、実際のプロジェクトで『どこまでをサーバー、どこからをクライアントにすべきか』という境界線の設計（Composition）の実践パターンを習得します。",
 codeExample: `// ❌ 悪い例: ページ全体を 'use client' にしてしまう（バンドル肥大化）
 // ⭕️ 良い例: データを取得するコンポーネント（RSC）の中で、ボタンなど必要な部分だけ Client Component 化する
 
@@ -20,7 +20,7 @@ export function LikeButton({ initialLikes }: { initialLikes: number }) {
   const [likes, setLikes] = useState(initialLikes);
   return (
     <button onClick={() => setLikes((prev) => prev + 1)}>
-      🏋️‍♂️ いいね！ ({likes})
+      🏋️‍♂️ いいね! ({likes})
     </button>
   );
 }
@@ -59,12 +59,17 @@ explanation: "App Router におけるデータ取得は、`fetch` や ORM (Prism
 codeExample: `import { revalidateTag } from "next/cache";
 
 // 1. 静的キャッシュ（SSG 的挙動: デフォルト）
+// → fetchの結果をビルド時に取得しキャッシュに保存する。
+//   以降のリクエストは再取得せずキャッシュを返し続けるため、更新頻度の低いコンテンツ（会社概要、規約ページなど）に向いています
 async function getStaticData() {
   const res = await fetch("https://api.example.com/data");
   return res.json();
 }
 
 // 2. 時間ベースの再検証（ISR 的挙動: 60秒ごとに更新）
+//   * ISR : ISR (Incremental Static Regeneration) は、Next.js のページ生成手法の一つです。ビルド時に生成される静的ページの一部を動的に更新できる仕組みです。ページのリクエストが発生する度に、バックグラウンドで指定した期限が切れたページを新しいものに差し替えることで、静的サイトのパフォーマンスを維持しつつ、最新のコンテンツを提供します。
+// → キャッシュは使いつつも、指定した秒数（ここでは60秒）が経過した後の最初のアクセス時にバックグラウンドで再取得する。
+//   「多少の遅延は許容できるが、ある程度は最新のデータを見せたい」場合...ダッシュボードやランキング表示などに向いています
 async function getRevalidatedData() {
   const res = await fetch("https://api.example.com/data", {
     next: { revalidate: 60, tags: ["dashboard-data"] },
@@ -73,6 +78,8 @@ async function getRevalidatedData() {
 }
 
 // 3. キャッシュなし（SSR 的挙動: リクエスト毎にリアルタイム取得）
+// → キャッシュを使わず、アクセスのたびに毎回サーバーから再取得します。
+//   在庫数や口座残高など「常に最新であること」が必須なデータに向いています（※その分サーバー負荷は高くなります）
 async function getDynamicData() {
   const res = await fetch("https://api.example.com/data", {
     cache: "no-store",
@@ -80,7 +87,9 @@ async function getDynamicData() {
   return res.json();
 }
 
-// Server Action で任意のタイミングにタグ単位でキャッシュ破棄！
+// 4. Server Action で任意のタイミングにタグ単位でキャッシュ破棄！
+// → 上記2番の「60秒待つ」のような時間経過を待たず、ユーザーの操作（保存ボタン押下など）をきっかけに即座にキャッシュを無効化したい場合に使います。
+//   同じtagsを指定したfetch（この例では2番）のキャッシュだけをピンポイントで破棄できます
 export async function refreshDashboard() {
   "use server";
   revalidateTag("dashboard-data");
@@ -152,9 +161,9 @@ keyPoints: [
 // 4.
 {
 stepNumber: 4,
-title: "Dynamic Routing とパラメーター処理の実践パターン",
+title: "Catch-all Routes によるパラメーター処理の実践パターン",
 explanation:
-  "ネストされた Dynamic Routing（`[category]/[id]`）や Catch-all Routes（`[...slug]`）を活用し、複雑な URL 構造から型安全にパラメーターを抽出してデータ取得へ接続します。",
+  "Chapter4では `[category]/[id]` のようなネストされた基本的な Dynamic Routing を学びました。ここでは一歩進んで、任意の深さのパスセグメントをまとめて受け取る Catch-all Routes（`[...slug]`）を活用し、より複雑な URL 構造から型安全にパラメーターを抽出してデータ取得へ接続するパターンを習得します。",
 codeExample: `// app/shop/[...slug]/page.tsx
 // URL例: /shop/clothes/tops/t-shirt
 
@@ -183,6 +192,7 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
 }`,
 keyPoints: [
   "`[...slug]` (Catch-all) や `[[...slug]]` (Optional Catch-all) を使いこなすことで柔軟な階層構造に対応",
+  "通常の `[id]` 形式（Chapter4参照）とは異なり、slug は必ず文字列の配列として受け取る点に注意",
   "Next.js 15 仕様に則り `params` と `searchParams` は Promise として `await` 処理する",
 ],
 },
@@ -223,4 +233,3 @@ keyPoints: [
 },
 
 ];
-
