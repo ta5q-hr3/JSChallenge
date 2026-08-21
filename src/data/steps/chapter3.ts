@@ -49,8 +49,46 @@ keyPoints: [
 {
 stepNumber: 2,
 title: "Props と State の厳格な型定義",
-explanation: "Reactコンポーネントの基本は『外部から渡される Props（読み取り専用）』と『内部で保持・変化する State（状態）』です。Props に Interface を定義し、useState にジェネリクス（<T>）を与えることで、データフロー全体の型不整合を完全にシャットアウトします。",
+explanation: "useStateは、Reactコンポーネントに「値の変化を検知して再描画する」状態(State)を持たせるための最も基本的なフックです。呼び出すと [現在の値, 値を更新する関数] という2つの要素を持つ配列が返り、これを分割代入で受け取って使います。更新用の関数を呼ぶとコンポーネントが再レンダリングされ、画面上の表示も自動的に最新の値へ更新されます。Reactコンポーネントの基本は『外部から渡される Props（読み取り専用）』と『内部で保持・変化する State（状態）』です。Props に Interface を定義し、useState にジェネリクス（<T>）を与えることで、データフロー全体の型不整合を完全にシャットアウトします。",
 codeExample: `import { useState } from "react";
+
+/*
+ ** useStateについて **
+// useStateの基本形：[現在の値, 値を更新する関数] という配列が返る
+const [isVisible, setIsVisible] = useState(false);
+// isVisible    : 現在の状態（この時点では false）
+// setIsVisible : isVisible を更新するための関数
+
+// setIsVisible(true) を実行すると、
+// 1. isVisible の値が true に更新される
+// 2. このコンポーネントが再レンダリングされる
+// 3. 再レンダリング後、isVisible は新しい値(true)として参照できる
+ */
+
+/*
+ ** useState<T>(初期値) **
+// useState<T>(初期値) の意味を分解すると：
+// <T>     : この状態(State)が保持する値の「型」を明示的に指定する部分
+// (初期値) : Stateの初期値。型注釈と矛盾する値を渡すとコンパイルエラーになる
+
+// 例1: number型であることを明示
+const [count, setCount] = useState<number>(initialCount);
+// → count は number型として扱われる
+// → setCount(1) はOK、setCount("1") は型エラーになる
+
+// 例2: 型注釈を省略した場合、TypeScriptは初期値から自動で型推論する
+const [count2, setCount2] = useState(0);
+// → 初期値が 0 (number) なので、count2 は自動的に number型と推論される
+// → 単純な初期値の場合、<T> を省略しても実用上ほぼ同じ結果になる
+
+// 例3: 明示的な型指定が「必須」になるケース
+// 初期値が null の場合、型注釈が無いと型が null 型のまま固定されてしまい、
+// 後から別の型の値を代入しようとするとエラーになってしまう
+const [user, setUser] = useState<UserProfile | null>(null);
+// → user は「UserProfile型 または null」として扱われる
+// → setUser({ id: "usr_001", name: "Taro" }) も setUser(null) もどちらも可能
+// ** つまり、nullが想定される値にuseStateを使用する場合はuseSate<T>()で型を指定する必要がある **
+ */
 
 // 1. Props の型定義（関数の引数と同じフォーム）
 interface CounterProps {
@@ -93,8 +131,10 @@ export function MuscleCounter({ initialCount = 0, label }: CounterProps) {
   );
 }`,
 keyPoints: [
+  "useStateは[現在の値, 更新用関数]という配列を返す。更新関数を呼ぶと再レンダリングがトリガーされ、画面が最新の値に同期される",
+  "useState<T>のTは「Stateが保持する値の型」を指定するもので、以降そのStateに代入できる値の型を制限する",
   "Props は読み取り専用（Immutable）。受け取る側で Interface を定義して契約を結ぶ",
-  "useState<T> で初期値から型が推論されるが、null を許容する場合などは明示的に Generics を渡す",
+  "useState<T> で初期値から型が推論されるが、null を許容する場合などは明示的に Generics を渡す (初期値だけで型が一意に決まらない場合(特にnullを初期値にする場合)は、<T>の明示が実質的に必須になる)",
   "useState<UserProfile | null>(null) のように「型 | null」を渡すと、『まだ値が無いかもしれない状態』を型で安全に表現できる。この場合、TypeScriptは使用前にnullチェックを行うことを促してくれる",
 ],
 },

@@ -1,4 +1,4 @@
-// CHAPTER.8
+// CHAPTER 8
 
 import { StepContent } from "@/types/wizard";
 
@@ -60,7 +60,7 @@ export function ProgressBar({ currentStep, totalSteps }: ProgressBarProps) {
 }`,
 keyPoints: [
   "単一責任の原則（SRP）に従い、UIパーツ単位でコンポーネントを分離してテスト・保守を容易にする",
-  "Tailwind CSS の動的ユーティリティクラスを活用して、パンプアップしたアニメーションやプログレス描画を実現",
+  "Tailwind CSS の動的ユーティリティクラスを活用して、アニメーションやプログレス描画を実現",
 ],
 },
 
@@ -137,20 +137,38 @@ keyPoints: [
 // 5.
 {
 stepNumber: 5,
-title: "Vercel & Docker コンテナへの本番デプロイと動作確認",
+title: "【総仕上げ演習】本番デプロイ前 最終チェックリスト",
 explanation:
-  "ビルドを完了したアプリを GitHub リポジトリ経由で Vercel にデプロイ、または `output: 'standalone'` を利用した Dockerfile でマルチステージビルドを行い、クラウドやオンプレミスの Linux サーバ上で世界に公開します。",
-codeExample: `# Vercel CLI を使ったターミナル一括デプロイの例
-npx vercel --prod
+  "Chapter1〜8で学んだ知識を総動員し、このウィザードアプリ自体を実際に本番環境へ公開してみましょう。デプロイの具体的な手順（Vercel CLI や Dockerfile の書き方）は Chapter7 で学んだ内容がそのまま使えます。ここでは再掲する代わりに、公開前に必ず確認すべき『最終チェックリスト』を通じて、これまでの学習内容を振り返ります。",
+codeExample: `# ✅ 本番デプロイ前 最終チェックリスト
 
-# Docker を利用したローカル/オンプレ環境での本番コンテナ起動の例
-docker build -t macho-wizard-app .
-docker run -p 3000:3000 -e NODE_ENV=production macho-wizard-app`,
+# 1. 型・Lint・ビルドが全てパスするか（Chapter8 Step4）
+npx tsc --noEmit && npm run lint && npm run build
+
+# 2. 環境変数は正しく設定されているか（Chapter7 Step4）
+#    - .env.local に必要な値が全て入っているか
+#    - 本番環境（Vercelのダッシュボード等）にも同じキーを登録したか
+#    - NEXT_PUBLIC_ が本当に必要な変数だけに付いているか（機密情報に付けていないか）
+
+# 3. .gitignore は適切か（Chapter7 Step5）
+#    - .env* や node_modules がコミット対象から除外されているか
+#    - git status で機密ファイルが追跡されていないか確認
+git status
+
+# 4. 認証・セキュリティ設定は本番URLに対応しているか（Chapter7 Step1〜3）
+#    - OAuthプロバイダー（GitHub等）のコールバックURLを本番ドメインに登録したか
+#    - Middlewareで保護すべきルートに漏れがないか
+
+# 5. デプロイ実行（Chapter7 Step6の手順を参照）
+npx vercel --prod
+# または
+# docker build -t macho-wizard-app . && docker run -p 3000:3000 macho-wizard-app
+`,
 keyPoints: [
-  "Vercel: Git Push に連動した CI/CD と Preview Deployment による爆速リリース体験",
-  "Docker: `output: 'standalone'` により最小限の Node.js 実行環境でどこでもポータブルに稼働させることが可能",
+  "デプロイの技術的な手順そのものはChapter7で習得済み。ここでは『デプロイ前に何を確認すべきか』というプロの視点でのチェックリスト運用を身につける",
+  "特に環境変数と.gitignoreの確認は、機密情報の漏洩に直結するため本番公開前に必ず二重チェックする習慣をつける",
+  "このチェックリストを通過したら、Chapter1から積み上げてきた型安全なTypeScript/React/Next.jsアプリケーションの完成です。お疲れ様でした！",
 ],
 },
 
 ];
-
