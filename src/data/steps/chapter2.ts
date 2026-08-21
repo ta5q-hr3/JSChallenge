@@ -137,7 +137,7 @@ keyPoints: [
 {
 stepNumber: 3,
 title: "Utility Types (Pick / Omit) による型の再利用",
-explanation: "既存の大きな型から、必要なプロパティだけを「抽出（Pick）」したり「除外（Omit）」したりして新しい型を作り出します。重複コードを撲滅し、元データの変更に強い設計を実現します。",
+explanation: "既存の大きな型から、必要なプロパティだけを「抽出（Pick）」したり「除外（Omit）」したりして新しい型を作り出します。元の型に加えられた変更も適用されるため重複コードを撲滅し、元データの変更に強い設計を実現します。",
 codeExample: `interface Article {
 id: string;
   title: string;

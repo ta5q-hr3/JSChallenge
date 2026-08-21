@@ -26,7 +26,9 @@ export interface Chapter {
   topics: string[];
 }
 
-export type ProgressMap = Record<number, number[]>; // { [chapterId]: [completedStepNumbers] }`,
+export type ProgressMap = Record<number, number[]>; // { [chapterId]: [completedStepNumbers] }
+// RecordはTypeScriptのUtility型。キーとプロパティを持ったオブジェクト型を作る。 Record<Keys, Type> → Keys : {Type}
+`,
 keyPoints: [
   "データ構造（Domain Type）を単一の型ファイルに集約し、保守性を劇的に高める",
   "ProgressMap のように `{ [chapterId]: stepNumbers[] }` の形式にすることで、章ごとの完了状況を O(1) で高速判定",
